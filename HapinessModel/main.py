@@ -1,6 +1,8 @@
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 df = pd.read_csv("data/survey.csv", sep=',')
 
@@ -20,6 +22,14 @@ mc = keras.callbacks.ModelCheckpoint('./models/best_model.h5', monitor='val_loss
 X = df[list(questions.keys())].astype(float)
 Y = df['D'].astype(float)
 
+def create_heatmap(df: pd.DataFrame, path: str):
+    corr = df.corr()
+    fig, ax = plt.subplots(figsize=(20, 20))
+    heatmap = sns.heatmap(corr, cmap='coolwarm', ax=ax)
+    heatmap.get_figure().savefig(path)
+
+
+create_heatmap(df, "./data/heatmap_avp.png")
 
 model = tf.keras.models.Sequential([
     tf.keras.layers.Flatten(input_shape=(6, 1)),

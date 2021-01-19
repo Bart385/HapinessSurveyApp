@@ -6,17 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 public class ThirdFragment extends Fragment {
-
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
     float rating = 0;
     ArrayList<Integer> ratings = new ArrayList<>();
     @Override
@@ -36,8 +38,11 @@ public class ThirdFragment extends Fragment {
         TextView textView = view.findViewById(R.id.textview_second);
         TextView confidenceTV = view.findViewById(R.id.ConfidenceTextView);
         TextView recommandations = view.findViewById(R.id.Reccomendations_textview);
+        ProgressBar confidence = view.findViewById(R.id.progressBar);
+        confidence.setScaleY(3f);
         textView.setText("U bent: " + ConfidenceToRating(rating, view));
-        confidenceTV.setText("Het model is hier: " + rating * 100 + "% zeker van");
+        confidence.setProgress((int)(rating *100));
+        confidenceTV.setText("Het model is hier: " + df2.format(rating) + "% zeker van");
         recommandations.setText(getRecommendations(ratings));
         view.setBackgroundColor(Color.WHITE);
     }

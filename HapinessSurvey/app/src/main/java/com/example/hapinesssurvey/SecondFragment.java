@@ -21,7 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 public class SecondFragment extends Fragment {
-        public int questionNumber = 0;
+        public int questionNumber = 1;
         @Override
         public View onCreateView(
                 LayoutInflater inflater, ViewGroup container,
@@ -49,15 +49,19 @@ public class SecondFragment extends Fragment {
             questions.add("the availability of social community events");
 
             TextView textView = view.findViewById(R.id.textview_question);
-            textView.setText(questions.get(questionNumber));
+            RatingBar rating = view.findViewById(R.id.ratingBar);
+            textView.setText(questions.get(0));
 
             view.findViewById(R.id.button_first).setOnClickListener(view1 -> {
-                RatingBar rating = view.findViewById(R.id.ratingBar);
-                ratings.add(rating.getProgress());
-                rating.setRating(0);
-                textView.setText(questions.get(questionNumber) );
-                questionNumber++;
-                if (questionNumber == questions.size()) {
+                if (questionNumber != 6) {
+
+                    ratings.add(rating.getProgress());
+                    rating.setRating(0);
+                    textView.setText(questions.get(questionNumber));
+                    questionNumber++;
+                }
+                else if (questionNumber  == 6) {
+                    ratings.add(rating.getProgress());
                     ThirdFragment thirdFragment = new ThirdFragment();
                     Bundle bundle=new Bundle();
                     bundle.putFloat("message", giveHap(ratings));
@@ -65,6 +69,7 @@ public class SecondFragment extends Fragment {
                     thirdFragment.setArguments(bundle);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(this.getId(),thirdFragment).addToBackStack(null).commit();
                 }
+
             });
 
         }
